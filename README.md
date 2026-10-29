@@ -20,7 +20,7 @@ every week. Firm weeks (0–2) are reliable at 2.1% WAPE; the trade zone (3–8)
 runs 8.1% with a +2.9% over-call; the forecast zone (9–12) 17.2% and +7.0%.
 Inside the trade zone the OEM's own schedule beats Vectron's statistical model
 (8.1% v 10.2%), and correcting each OEM's schedule for its own trailing bias,
-with no look-ahead, brings it to 7.4%. The story is "learn each OEM's bias",
+with no look-ahead, brings it to 7.6%. The story is "learn each OEM's bias",
 not "ignore the OEM". A monthly read of a plant shutdown that moves a week
 between years reports BMW August down 49.6% year on year; aligned to the
 shutdown week, the two years overlay.
