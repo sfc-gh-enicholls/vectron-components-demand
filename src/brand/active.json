@@ -1,0 +1,26 @@
+{
+  "host": "snowflake",
+  "modes": ["light", "dark"],
+  "defaultMode": "light",
+  "appName": "Vectron Components",
+  "appSub": "Demand planning",
+  "title": ["Vectron", "demand plan"],
+  "industry": "Automotive Tier 1",
+  "breadcrumbRoot": "Industry apps",
+  "brandSlot": { "type": "snowflake-lockup", "label": ["Industry apps", "Discrete manufacturing"] },
+  "showBuiltOnSnowflake": false,
+  "dataLabel": "Synthetic data · demo environment",
+  "freshnessLabel": "Synthetic data",
+  "metaTitle": "Vectron Components | Demand Planning",
+  "metaDescription": "Weekly OEM call-off, service-parts and vehicle-production demand planning — powered by Snowflake",
+  "steps": ["Sense", "Forecast", "Decide", "Prove"],
+  "navSections": [
+    { "label": "Sense", "items": ["/", "/sensing", "/calloffs", "/ihs"] },
+    { "label": "Forecast", "items": ["/baseline", "/service", "/review"] },
+    { "label": "Decide", "items": ["/plan", "/agent", "/scenarios", "/approvals", "/supply"] },
+    { "label": "Prove", "items": ["/value", "/accuracy"] },
+    { "label": "Structure", "items": ["/hierarchy", "/npd"] }
+  ],
+  "locale": "en-GB",
+  "currency": "EUR"
+}

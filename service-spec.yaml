@@ -1,0 +1,25 @@
+spec:
+  container:
+    - name: snowplan
+      image: /SNOWPLAN/SOP/SNOWPLAN_IMAGES/snowplan:latest
+      env:
+        SNOWFLAKE_ACCOUNT: "<your-account-identifier>"
+        SNOWFLAKE_DATABASE: SNOWPLAN
+        SNOWFLAKE_SCHEMA: SOP
+        SNOWFLAKE_WAREHOUSE: COMPUTE_WH
+        # Logo swap: set NEXT_PUBLIC_LOGO_URL to override the default SVG mark
+        # NEXT_PUBLIC_LOGO_URL: "https://your-cdn.com/client-logo.png"
+      resources:
+        requests:
+          memory: 512M
+          cpu: "0.5"
+        limits:
+          memory: 1G
+          cpu: "1"
+      readinessProbe:
+        port: 8000
+        path: /
+  endpoint:
+    - name: main
+      port: 8000
+      public: true

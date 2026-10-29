@@ -1,0 +1,450 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+/*
+ * The sibling application also carries `@import "shadcn/tailwind.css"` here,
+ * but that specifier is not in the shadcn package's `exports` map (the file
+ * ships at `shadcn/dist/tailwind.css`), so it has never actually resolved.
+ *
+ * CORRECTION. An earlier note here said that file provided only accordion
+ * keyframes plus `scroll-fade` and `shimmer` utilities, and so could be
+ * dropped. That was wrong. It also defines NINE @custom-variants that the shadcn
+ * primitives in src/components/ui depend on, and dropping it silently broke the
+ * two that map to a DIFFERENT attribute from their own name:
+ *
+ *   data-horizontal:  must match [data-orientation="horizontal"]
+ *   data-vertical:    must match [data-orientation="vertical"]
+ *
+ * Without the custom variant, Tailwind compiles `data-horizontal:flex-col` to
+ * `[data-horizontal]` — an attribute base-ui never emits. So the Tabs root never
+ * got `flex-col` and laid out as a ROW: tab list on the left, panel squashed
+ * into the right. Separator, slider and scroll-area carried the same latent bug.
+ * Verified in the compiled CSS before fixing:
+ *   .data-horizontal\:flex-col[data-horizontal] { ... }
+ *
+ * ONLY THESE TWO ARE RESTORED, deliberately. The other seven (data-open,
+ * data-closed, data-checked, data-unchecked, data-selected, data-disabled,
+ * data-active) share their attribute's name, and base-ui emits them as bare
+ * attributes that are simply absent when false. Tailwind's built-in
+ * `data-open:` -> `[data-open]` already matches that correctly, so redefining
+ * them would change working behaviour on dialogs, menus and switches for no
+ * benefit. If a Radix-style `data-state="open"` component is ever added, THAT is
+ * when the rest of the shadcn variants need restoring.
+ */
+
+/*
+ * SNOWFLAKE TOKEN SYSTEM
+ * ----------------------
+ * Colour, type and mode now come from the snowflake-app-branding skill's files,
+ * served from public/ui and inlined here so they join Tailwind's cascade:
+ *
+ *   tokens.css      Snowflake layer + default Snowflake host, light and dark.
+ *   themes/*.css    other hosts (editorial). Each applies only under its own
+ *                   [data-host], so importing it unconditionally is harmless.
+ *   components.css  the skill's components, in Tailwind's `components` layer:
+ *                   above preflight (so its padding survives the reset) and
+ *                   below utilities (so every existing utility class still wins
+ *                   and no screen's layout is taken over by a bare `td` rule).
+ *
+ * Host and mode live on <html data-host data-mode>; see layout.tsx.
+ */
+@import "../../public/ui/tokens.css";
+@import "../../public/ui/themes/editorial.css";
+@import "../../public/ui/components.css" layer(components);
+
+/*
+ * `dark:` is used only by the shadcn primitives in src/components/ui. It now
+ * follows the mode attribute instead of a `.dark` class. The old `light:` and
+ * `editorial:` variants had no users and are gone with the class themes.
+ */
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
+
+@custom-variant data-horizontal {
+  &:where([data-orientation="horizontal"]) {
+    @slot;
+  }
+}
+
+@custom-variant data-vertical {
+  &:where([data-orientation="vertical"]) {
+    @slot;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--ui-font);
+  --font-display: var(--display);
+  --font-num: var(--num-font);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-6: var(--chart-6);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-card-soft: var(--card-soft);
+  /* Product tokens */
+  --color-product-primary: var(--product-primary);
+  --color-product-accent: var(--product-accent);
+  /* Semantic override colours */
+  --color-banner-fg: var(--banner-fg);
+  --color-banner-eyebrow: var(--banner-eyebrow);
+  --color-banner-subtle: var(--banner-subtle);
+  --color-override-amber: var(--override-amber);
+  --color-override-amber-bg: var(--override-amber-bg);
+  /* Chart surface tokens */
+  --color-chart-grid: var(--chart-grid);
+  --color-chart-band: var(--chart-band);
+  /* Elevation & text depth */
+  --color-bg-elevated: var(--bg-elevated);
+  --color-text-tertiary: var(--text-tertiary);
+  /* Accent derivations */
+  --color-accent-muted: var(--accent-muted);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-accent-on: var(--accent-on);
+  /* Semantic status */
+  --color-positive: var(--positive);
+  --color-positive-on: var(--positive-on);
+  --color-positive-subtle: var(--positive-subtle);
+  --color-warning: var(--warning);
+  --color-warning-on: var(--warning-on);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-negative: var(--negative);
+  --color-negative-on: var(--negative-on);
+  --color-negative-subtle: var(--negative-subtle);
+  --color-neutral: var(--neutral);
+  --color-neutral-on: var(--neutral-on);
+  --color-neutral-subtle: var(--neutral-subtle);
+  /* Skill token names, so new markup can use them directly */
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-action: var(--action);
+  --color-on-action: var(--on-action);
+  --color-crit: var(--crit);
+  --color-risk: var(--risk);
+  --color-ok: var(--ok);
+  --color-title-ink: var(--title-ink);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  /* No shadows (product rule). Overlays keep a hairline so they still separate
+     from the page. */
+  --shadow-z1: none;
+  --shadow-z4: none;
+  --shadow-z8: none;
+  --shadow-z12: none;
+  --shadow-card: none;
+  --shadow-dropdown: 0 0 0 1px var(--line-strong);
+  --shadow-dialog: 0 0 0 1px var(--line-strong);
+}
+
+/*
+ * THE BRIDGE
+ * ----------
+ * Every colour name the app's components already use, defined ONCE as an alias
+ * of a skill token. Nothing here depends on the mode or the host: tokens.css
+ * (or a host theme) switches the values underneath, so the same utility class
+ * is right in light, dark and every skin, and no component had to change.
+ *
+ * Status follows the product rule of no reds and no greens: critical and
+ * negative are First Light rose, at-risk and warning Valencia orange, positive
+ * and neutral Windy City grey. Meaning still travels with the text labels and
+ * icons that carry it today.
+ */
+:root {
+  --radius: 0.75rem;
+
+  --product-primary: var(--action);
+  --product-accent: var(--sfx-series);
+
+  --background: var(--canvas);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-soft: var(--surface-2);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+
+  --primary: var(--action);
+  --primary-foreground: var(--on-action);
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--ink);
+  --muted: var(--surface-2);
+  --muted-foreground: var(--ink-3);
+  --accent: var(--action);
+  --accent-foreground: var(--on-action);
+  --destructive: var(--crit);
+
+  --border: var(--line);
+  --input: var(--line-strong);
+  --ring: var(--action);
+
+  --chart-1: var(--series-1);
+  --chart-2: var(--series-2);
+  --chart-3: var(--series-3);
+  --chart-4: var(--sf-purple);
+  --chart-5: var(--ink-3);
+  --chart-6: var(--sf-orange);
+  --chart-grid: var(--line);
+  --chart-band: var(--shade);
+
+  --bg-elevated: var(--surface-2);
+  --text-tertiary: var(--ink-3);
+
+  --accent-muted: var(--series-3);
+  --accent-subtle: color-mix(in srgb, var(--action) 12%, transparent);
+  --accent-on: var(--on-action);
+
+  --positive: var(--ok);
+  --positive-subtle: var(--ok-bg);
+  --positive-on: var(--st-ink);
+  --warning: var(--risk);
+  --warning-subtle: var(--risk-bg);
+  --warning-on: var(--st-ink);
+  --negative: var(--crit);
+  --negative-subtle: var(--crit-bg);
+  --negative-on: var(--st-ink);
+  --neutral: var(--ok);
+  --neutral-subtle: var(--ok-bg);
+  --neutral-on: var(--st-ink);
+
+  --sidebar: var(--nav-bg);
+  --sidebar-foreground: var(--nav-ink);
+  --sidebar-primary: var(--action);
+  --sidebar-primary-foreground: var(--on-action);
+  --sidebar-accent: var(--nav-active-bg);
+  --sidebar-accent-foreground: var(--nav-active-ink);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--action);
+
+  --override-amber: var(--risk);
+  --override-amber-bg: var(--risk-bg);
+
+  --display-tracking: 0;
+  --banner-fg: var(--band-ink);
+  --banner-eyebrow: var(--band-ink);
+  --banner-subtle: var(--ink-3);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: 0;
+  }
+
+  /* A unitless line-height so a heading's box is set by font-size rather than
+     by the face's intrinsic metrics. Note this only bites on headings that do
+     NOT carry a Tailwind `text-*` utility, since those set their own
+     line-height and win on specificity. Every host uses Lato now, so the old
+     serif-versus-sans baseline residual no longer arises. */
+  h1, h2, h3, h4 {
+    line-height: 1.3;
+  }
+
+  /* Tabular figures in tables so digits align in columns and numbers do not
+     jitter as values update. Called for by the data-table spec. */
+  th, td {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Numbers right-align by default in tables; text columns opt back out with an
+     explicit text-left. Prevents the ragged numeric columns the spec calls out. */
+  td.num, th.num {
+    text-align: right;
+  }
+
+}
+
+/* Visible keyboard focus everywhere. Deliberately UNLAYERED: inside @layer base
+   this lost the cascade to Tailwind's `outline-none` utility and to the `*`
+   outline reset, so most focusable elements computed outline-width: 0 despite
+   matching :focus-visible. Keyboard navigation is listed as non-negotiable in
+   the design system, so this needs to win. */
+:focus-visible {
+  outline: 2px solid var(--ring) !important;
+  outline-offset: 2px !important;
+}
+
+/* Recharts puts a tabindex on its chart <svg>, so those elements ARE reachable by
+   keyboard. Suppressing their ring left two stops on /demand where a keyboard user
+   could not see where they were, so they keep the ring. Only genuinely decorative,
+   aria-hidden nodes are exempt — and those should not be focusable in the first
+   place. */
+[aria-hidden="true"]:focus-visible {
+  outline: none !important;
+}
+
+/* Respect reduced-motion preferences. The spec asks for 200ms ease-out
+   transitions throughout; for users who have asked the OS to reduce motion,
+   near-instant is the correct interpretation of that intent. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer utilities {
+  .shadow-card     { box-shadow: var(--shadow-card); }
+  .shadow-z1       { box-shadow: var(--shadow-z1); }
+  .shadow-z4       { box-shadow: var(--shadow-z4); }
+  .shadow-z8       { box-shadow: var(--shadow-z8); }
+  .shadow-z12      { box-shadow: var(--shadow-z12); }
+  .shadow-dropdown { box-shadow: var(--shadow-dropdown); }
+  .shadow-dialog   { box-shadow: var(--shadow-dialog); }
+  .glass {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  /* Override cell highlight */
+  .cell-override {
+    background-color: var(--override-amber-bg);
+    border-left: 3px solid var(--override-amber);
+  }
+  /* Card titles, in the product's card-title style (the skill's `.ch .t`). One
+     class for every card heading, so a host changes them all through tokens. */
+  .card-title {
+    font-family: var(--display);
+    font-weight: var(--title-weight);
+    text-transform: var(--title-case);
+    letter-spacing: var(--title-track);
+    font-size: var(--title-size);
+    line-height: 1.35;
+    color: var(--title-ink);
+  }
+  /* Dimension tree picker (the Siemens IBP tree-picker, on this app's tokens). */
+  .tree-picker { position: relative; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .tree-label { font-size: var(--type-xs, 12px); color: var(--ink-3); }
+  .tree-trigger {
+    display: flex; justify-content: space-between; align-items: center; gap: 8px;
+    height: 36px; padding: 0 10px; text-align: left; font-size: 14px; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; cursor: pointer; min-width: 0;
+  }
+  .tree-trigger:disabled { cursor: default; color: var(--ink-3); }
+  .tree-trigger:focus-visible, .tree-toggle:focus-visible, .tree-select:focus-visible, .tree-tabs button:focus-visible {
+    outline: 2px solid var(--action); outline-offset: 2px;
+  }
+  .tree-trigger span, .tree-trail { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tree-trail { font-size: var(--type-xs, 12px); color: var(--ink-3); min-height: 1.4em; }
+  .tree-panel {
+    position: fixed; z-index: 60; max-height: 380px; overflow: auto;
+    background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 6px;
+  }
+  .tree-panel ul { list-style: none; margin: 0; padding: 0; }
+  .tree-tabs { display: flex; flex-wrap: wrap; gap: 4px; padding: 2px 2px 8px; margin-bottom: 6px; border-bottom: 1px solid var(--line); }
+  .tree-tabs button {
+    font-size: 12px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); background: none; color: var(--ink-2); cursor: pointer;
+  }
+  .tree-tabs button[aria-pressed="true"] { border-color: var(--action); color: var(--action); font-weight: 700; }
+  .tree-row { display: flex; align-items: center; gap: 2px; padding-left: calc(var(--depth, 0) * 16px); }
+  .tree-toggle, .tree-spacer { width: 26px; height: 26px; flex-shrink: 0; }
+  .tree-toggle { display: grid; place-content: center; border: 0; background: none; color: var(--ink-3); border-radius: 6px; cursor: pointer; }
+  .tree-toggle:hover, .tree-select:hover { background: var(--shade); }
+  .tree-select {
+    flex: 1; min-width: 0; text-align: left; padding: 4px 8px; font-size: 14px; color: var(--ink);
+    border: 0; background: none; border-radius: 6px; cursor: pointer; overflow-wrap: anywhere;
+  }
+  .tree-select.selected { color: var(--action); font-weight: 700; }
+  @media (max-width: 800px) { .tree-panel { max-width: calc(100vw - 16px); } }
+  /* Agent suggestion marker. Was a pulsing blue halo; the product allows no
+     glows, so it is now a steady Snowflake-layer border (the agent is
+     Snowflake doing the work). The class name is unchanged for its users. */
+  .agent-glow {
+    border-color: var(--sfx-series);
+  }
+  /* Recharts Snowflake Dashboards 2.0 style */
+  .recharts-cartesian-grid-horizontal line,
+  .recharts-cartesian-grid-vertical line {
+    stroke: var(--chart-grid);
+    stroke-opacity: 1;
+  }
+  .recharts-cartesian-axis-line,
+  .recharts-cartesian-axis-tick-line {
+    stroke: transparent;
+  }
+  .recharts-yAxis .recharts-cartesian-axis-tick-value {
+    font-size: 10px;
+    fill: var(--muted-foreground);
+    opacity: 0.7;
+  }
+  .recharts-xAxis .recharts-cartesian-axis-tick-value {
+    font-size: 10px;
+    fill: var(--muted-foreground);
+    opacity: 0.8;
+  }
+  .recharts-text,
+  .recharts-cartesian-axis-tick-value {
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-size: 10px;
+    fill: var(--muted-foreground);
+  }
+  .recharts-curve,
+  .recharts-line-curve {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .recharts-tooltip-wrapper .recharts-default-tooltip {
+    background-color: var(--card) !important;
+    border-color: var(--border) !important;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-dropdown);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-size: 12px;
+    padding: 8px 12px !important;
+  }
+  .recharts-tooltip-item {
+    color: var(--foreground) !important;
+    font-size: 11px;
+  }
+  .recharts-legend-item-text {
+    color: var(--muted-foreground) !important;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-size: 11px;
+  }
+  .recharts-legend-wrapper {
+    padding-top: 8px !important;
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "host": "editorial",
+  "modes": ["dark"],
+  "defaultMode": "dark",
+  "appName": "Vectron Components",
+  "appSub": "Demand planning",
+  "title": ["Vectron", "demand plan"],
+  "industry": "Automotive Tier 1",
+  "breadcrumbRoot": "Industry apps",
+  "brandSlot": { "type": "wordmark", "text": "Vectron", "sub": "Demand planning" },
+  "showBuiltOnSnowflake": true,
+  "dataLabel": "Synthetic data · demo environment",
+  "freshnessLabel": "Synthetic data",
+  "metaTitle": "Vectron Components | Demand Planning",
+  "metaDescription": "Weekly demand planning, sensing and driver attribution — powered by Snowflake",
+  "steps": ["Sense", "Forecast", "Decide", "Prove"],
+  "navSections": [
+    { "label": "Sense", "items": ["/", "/sensing", "/calloffs", "/ihs"] },
+    { "label": "Forecast", "items": ["/baseline", "/service", "/review"] },
+    { "label": "Decide", "items": ["/plan", "/agent", "/scenarios", "/approvals", "/supply"] },
+    { "label": "Prove", "items": ["/value", "/accuracy"] },
+    { "label": "Structure", "items": ["/hierarchy", "/npd"] }
+  ],
+  "locale": "en-GB",
+  "currency": "EUR"
+}

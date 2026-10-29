@@ -1,0 +1,44 @@
+/* ==========================================================================
+   Host theme: editorial (dark only)
+
+   The champagne-on-black skin the app shipped with before it moved onto the
+   Snowflake token system, kept as its own host so nothing was lost. It is not
+   in the light/dark toggle: the toggle switches modes within one host, and this
+   host has one mode.
+
+   To use it: copy src/brand/editorial.json over src/brand/active.json and
+   restart the dev server. Copy snowflake.json back to return.
+
+   Colours are the previous `.editorial` values, renamed to the skill's tokens.
+   Status follows the brand rule (no red, no green): critical is the old
+   burnt-sienna negative, at risk the old amber, ok a neutral grey.
+   ========================================================================== */
+
+[data-host="editorial"],
+[data-host="editorial"][data-mode="dark"]{
+  color-scheme:dark;
+  --canvas:#0A0A0A; --surface:#111111; --surface-2:#1A1A1A;
+  --ink:#E8E4DF; --ink-2:#C9C3BB; --ink-3:#8F8F8F;
+  --line:#262626; --line-strong:#3A3A3A;
+  --nav-bg:#050505; --nav-ink:#C9C3BB; --nav-sec:#C8B89A;
+  --nav-active-bg:#151515; --nav-active-ink:#E8E4DF; --nav-active-bar:#C8B89A;
+  --band-bg:#111111; --band-ink:#C8B89A; --band-hl:#EFEAE3; --band-border:#262626; --band-dot:#C8B89A;
+  --action:#C8B89A; --on-action:#0A0A0A;
+  --crit:#C4664A; --crit-bg:#2A1812; --risk:#C4956A; --risk-bg:#1F1A14; --ok:#999999; --ok-bg:#1C1C1C; --st-ink:#E8E4DF;
+  --series-1:#C8B89A; --series-2:#555555; --series-3:#8B7355; --shade:#161412;
+  --title-ink:#C8B89A; --label-ink:#8F8F8F;
+  --step-done-bg:rgba(200,184,154,.14); --step-done-ink:#E8E4DF;
+  --step-cur-bg:#C8B89A; --step-cur-ink:#0A0A0A; --step-cur-border:#C8B89A;
+  --step-fut-border:rgba(200,184,154,.45); --step-fut-ink:#C8B89A;
+
+  --band-deco:block;
+  --ui-font:Lato, "Helvetica Neue", Arial, sans-serif;
+  --display:Lato, "Helvetica Neue", Arial, sans-serif;
+  --display-weight:900; --display-case:uppercase; --display-track:0;
+  --num-font:Lato, "Helvetica Neue", Arial, sans-serif; --num-weight:900;
+  --strong-weight:700; --th-weight:700;
+  --title-weight:900; --title-case:uppercase; --title-track:0; --title-size:13px;
+  --label-weight:900; --label-track:0; --label-size:11px;
+  --wordmark-track:0;
+  --cover-size:52px; --cover-lh:.84; --cover-stack:block;
+}

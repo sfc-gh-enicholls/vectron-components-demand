@@ -1,0 +1,116 @@
+/* ==========================================================================
+   Snowflake industry apps — design tokens
+   Two layers, two modes.
+
+   LAYERS
+     1. SNOWFLAKE LAYER  (--sf-*, --sfx-*)  fixed in every skin. Never edit per customer.
+     2. HOST LAYER       (everything else)   the brand the app is dressed in.
+        Default host = Snowflake. A customer re-skin replaces ONLY the host
+        blocks, in its own file: themes/<slug>.css
+
+   MODES
+     Every host defines a light block and a dark block. The dark block only
+     overrides colour tokens; type, weights and sizes carry over.
+     The Snowflake layer switches automatically with the mode.
+
+   Usage, on the <html> element (so a pre-paint script can set the mode):
+     <html data-host="snowflake" data-mode="light">
+     <html data-host="acme"      data-mode="dark">
+   ========================================================================== */
+
+@font-face{font-family:Lato;font-weight:300;font-display:swap;src:url(fonts/lato-latin-300-normal.woff2) format('woff2')}
+@font-face{font-family:Lato;font-weight:400;font-display:swap;src:url(fonts/lato-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:Lato;font-weight:700;font-display:swap;src:url(fonts/lato-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:Lato;font-weight:900;font-display:swap;src:url(fonts/lato-latin-900-normal.woff2) format('woff2')}
+
+/* ── 1. SNOWFLAKE LAYER — fixed ─────────────────────────────────────────── */
+:root{
+  /* Brand palette (Snowflake Visual Brand Guidelines, Jan 2025) */
+  --sf-blue:#29B5E8;      /* Snowflake Blue, primary */
+  --sf-mid:#11567F;       /* Mid Blue, contrasting */
+  --sf-midnight:#000000;  /* Midnight, for serious business */
+  --sf-star:#71D3DC;      /* Star Blue, accent / call to action */
+  --sf-orange:#FF9F36;    /* Valencia Orange, accent */
+  --sf-purple:#7D44CF;    /* Purple Moon, accent */
+  --sf-rose:#D45B90;      /* First Light, accent */
+  --sf-windy:#8A999E;     /* Windy City, neutral */
+  --sf-iceberg:#003545;   /* Iceberg, serious blue */
+  --sf-winter:#24323D;    /* Winter, serious neutral */
+  --sf-blue-20:#D4F0FA;   /* 20% tint of Snowflake Blue */
+  --sf-font:Lato, "Helvetica Neue", Arial, sans-serif;
+}
+/* Snowflake-layer components in LIGHT mode (also the default when no mode is set) */
+:root,[data-mode="light"]{
+  --sfx-chip-bg:#D4F0FA; --sfx-chip-ink:#11567F; --sfx-icon:#29B5E8;
+  --sfx-link:#11567F; --sfx-link-line:#29B5E8;
+  --sfx-border:#B5E3F5; --sfx-panel:#F1FAFE;
+  --sfx-series:#29B5E8; --sfx-fresh:#29B5E8;
+}
+/* Snowflake-layer components in DARK mode */
+[data-mode="dark"]{
+  --sfx-chip-bg:#003545; --sfx-chip-ink:#29B5E8; --sfx-icon:#29B5E8;
+  --sfx-link:#29B5E8; --sfx-link-line:#11567F;
+  --sfx-border:#0E3644; --sfx-panel:#0C181D;
+  --sfx-series:#29B5E8; --sfx-fresh:#29B5E8;
+}
+
+/* ── 2. HOST LAYER — default: Snowflake ─────────────────────────────────── */
+
+/* Light mode: all tokens */
+[data-host="snowflake"]{
+  color-scheme:light;
+  /* Surfaces and text */
+  --canvas:#F3F5F6; --surface:#FFFFFF; --surface-2:#F4F7F8;
+  --ink:#000000; --ink-2:#24323D; --ink-3:#5B6B73;
+  --line:#E1E7EA; --line-strong:#C6D0D5;
+  /* Navigation */
+  --nav-bg:#FFFFFF; --nav-ink:#24323D; --nav-sec:#11567F;
+  --nav-active-bg:#D4F0FA; --nav-active-ink:#11567F; --nav-active-bar:#29B5E8;
+  /* Header band */
+  --band-bg:#29B5E8; --band-ink:#000000; --band-hl:#FFFFFF; --band-border:transparent; --band-dot:#FFFFFF;
+  /* Actions */
+  --action:#11567F; --on-action:#FFFFFF;
+  /* Status (no reds, no greens) */
+  --crit:#D45B90; --crit-bg:#F7E1EB; --risk:#FF9F36; --risk-bg:#FFEEDB; --ok:#8A999E; --ok-bg:#ECEFF0; --st-ink:#000000;
+  /* Charts (host series; the Cortex series is --sfx-series) */
+  --series-1:#11567F; --series-2:#8A999E; --series-3:#71D3DC; --shade:#EEF2F4;
+  /* Card titles and labels */
+  --title-ink:#11567F; --label-ink:#5B6B73;
+  /* Workflow steps (sit on the band) */
+  --step-done-bg:rgba(255,255,255,.88); --step-done-ink:#000000;
+  --step-cur-bg:#000000; --step-cur-ink:#FFFFFF; --step-cur-border:#000000;
+  --step-fut-border:rgba(0,0,0,.4); --step-fut-ink:#000000;
+
+  /* Not mode-dependent */
+  --band-deco:block;
+  --ui-font:Lato, "Helvetica Neue", Arial, sans-serif;
+  --display:Lato, "Helvetica Neue", Arial, sans-serif;  /* stand-in for Texta Black until licensed for web */
+  --display-weight:900; --display-case:uppercase; --display-track:0;
+  --num-font:Lato, "Helvetica Neue", Arial, sans-serif; --num-weight:900;
+  --strong-weight:700; --th-weight:700;
+  --title-weight:900; --title-case:uppercase; --title-track:0; --title-size:13px;
+  --label-weight:900; --label-track:0; --label-size:11px;
+  --wordmark-track:0;
+  --cover-size:52px; --cover-lh:.84; --cover-stack:block;
+}
+
+/* Dark mode: colour tokens only */
+[data-host="snowflake"][data-mode="dark"]{
+  color-scheme:dark;
+  --canvas:#0B0F12; --surface:#121A1F; --surface-2:#18232A;
+  --ink:#F2F5F6; --ink-2:#C5CFD3; --ink-3:#8FA0A7;
+  --line:#22303A; --line-strong:#34454F;
+  --nav-bg:#0B0F12; --nav-ink:#C5CFD3; --nav-sec:#29B5E8;
+  --nav-active-bg:#003545; --nav-active-ink:#FFFFFF; --nav-active-bar:#29B5E8;
+  /* Band becomes Iceberg: on dark floods the brand puts the highlight in white */
+  --band-bg:#003545; --band-ink:#29B5E8; --band-hl:#FFFFFF; --band-border:transparent; --band-dot:#29B5E8;
+  /* Star Blue is the brand's call-to-action accent; Mid Blue disappears on dark */
+  --action:#71D3DC; --on-action:#000000;
+  --crit:#D45B90; --crit-bg:#392736; --risk:#FF9F36; --risk-bg:#3D3223; --ok:#8A999E; --ok-bg:#283136; --st-ink:#F2F5F6;
+  /* Actuals go near-white so the Cortex series (Snowflake Blue) stays distinct */
+  --series-1:#F2F5F6; --series-2:#8A999E; --series-3:#71D3DC; --shade:#172129;
+  --title-ink:#29B5E8; --label-ink:#8FA0A7;
+  --step-done-bg:rgba(255,255,255,.12); --step-done-ink:#FFFFFF;
+  --step-cur-bg:#29B5E8; --step-cur-ink:#000000; --step-cur-border:#29B5E8;
+  --step-fut-border:rgba(41,181,232,.55); --step-fut-ink:#29B5E8;
+}

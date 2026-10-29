@@ -1,0 +1,35 @@
+{
+  "_comment": [
+    "Single source of truth for the demand-response assumptions.",
+    "",
+    "Read by BOTH src/lib/scenario.ts (the UI and API) and scripts/agent.py (the",
+    "proposal engine). They must never diverge: if the agent quantified a price",
+    "change with different elasticities from the ones the app explains a number",
+    "with, the two would contradict each other on screen. Keeping them in one",
+    "file rather than duplicating the constants in each language is the point.",
+    "",
+    "These are ASSUMPTIONS, not per-series fitted estimates. They are also the",
+    "assumptions the dataset was generated from, so simulation stays coherent",
+    "with the driver attribution. A production deployment would estimate a price",
+    "elasticity per series from its own price history and interval it."
+  ],
+  "tierElasticity": {
+    "Commodity": -1.4,
+    "Standard": -1.0,
+    "Engineered": -0.7,
+    "Mechatronic": -0.45
+  },
+  "channelPriceMultiplier": {
+    "OE series production": 0.1,
+    "OES service parts": 0.5,
+    "Independent aftermarket": 1.2
+  },
+  "tierMacroSensitivity": {
+    "Mechatronic": 0.011,
+    "Engineered": 0.008,
+    "Standard": 0.006,
+    "Commodity": 0.004
+  },
+  "distributionExponent": 0.45,
+  "promoVisibilityUplift": 0.12
+}

@@ -1,0 +1,18 @@
+node_modules/
+.next/
+tsconfig.tsbuildinfo
+.superpowers/
+.env
+.env.local
+.DS_Store
+snowflake.log
+.superpowers/
+.worktrees/
+__pycache__/
+*.pyc
+.cortex/
+old-ui/
+.baseline-debug.html
+
+# Static GitHub Pages build (scripts/static/publish-pages.sh)
+out/
