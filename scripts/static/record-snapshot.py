@@ -71,6 +71,15 @@ def main() -> None:
         for route in ROUTES:
             page.goto(BASE + route, wait_until="networkidle", timeout=240000)
             page.wait_for_timeout(2500)
+            if route == "/review":
+                # Series detail loads on click, so fetch every worklist row the page lists.
+                page.evaluate("""async () => {
+                  const d = await (await fetch('/api/review')).json();
+                  for (const e of d.worklist.slice(0, 80)) {
+                    await fetch('/api/review?series=' + encodeURIComponent(e.SERIES_ID));
+                  }
+                }""")
+                page.wait_for_timeout(1000)
             print(f"{route:12} {len(index)} responses so far")
         browser.close()
 
