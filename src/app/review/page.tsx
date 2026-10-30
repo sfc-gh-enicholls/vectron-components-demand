@@ -602,14 +602,14 @@ export default function ReviewPage() {
 
               {/* ---------------- Promotions ---------------- */}
               <Card className="p-4">
-                <h2 className="card-title">Recent promotions</h2>
+                <h2 className="card-title">Recent trade campaigns</h2>
                 <p className="mt-0.5 text-xs text-text-tertiary">
-                  Planned versus realised uplift. A persistent gap means the
-                  promotional assumption, not the baseline, is what needs fixing.
+                  Planned versus realised uplift from aftermarket campaigns. A persistent
+                  gap means the campaign assumption, not the baseline, is what needs fixing.
                 </p>
                 {detail.promos.length === 0 ? (
                   <p className="mt-3 text-xs text-text-tertiary">
-                    No promotions recorded for this series.
+                    No trade campaigns for this series. OE call-offs are not promoted.
                   </p>
                 ) : (
                   <div className="mt-2 overflow-x-auto">

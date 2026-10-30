@@ -114,15 +114,15 @@ SELECT
     WHEN 'WEATHER' THEN 7 WHEN 'MACRO' THEN 8 WHEN 'COMPETITOR' THEN 9
     ELSE 10 END AS DRIVER_ORDER,
   CASE d.DRIVER
-    WHEN 'BASE' THEN 'Underlying level'
+    WHEN 'BASE' THEN 'Underlying run-rate'
     WHEN 'SEASONALITY' THEN 'Week-of-year seasonality'
-    WHEN 'EVENT' THEN 'Festival and gifting events'
-    WHEN 'PRICE' THEN 'Price position'
-    WHEN 'PROMO' THEN 'Promotional activity'
-    WHEN 'DISTRIBUTION' THEN 'Distribution and listings'
-    WHEN 'WEATHER' THEN 'Weather versus normal'
-    WHEN 'MACRO' THEN 'Macro and duty'
-    WHEN 'COMPETITOR' THEN 'Competitor activity'
+    WHEN 'EVENT' THEN 'Shutdowns, SOP and changeovers'
+    WHEN 'PRICE' THEN 'Price-downs and surcharges'
+    WHEN 'PROMO' THEN 'Aftermarket trade campaigns'
+    WHEN 'DISTRIBUTION' THEN 'Nominations and share of business'
+    WHEN 'WEATHER' THEN 'Weather versus normal (aftermarket)'
+    WHEN 'MACRO' THEN 'Macro, tariffs and duty'
+    WHEN 'COMPETITOR' THEN 'Competitor resourcing'
     ELSE 'Unexplained residual' END AS DRIVER_LABEL,
   -- Weather, macro and competitor inputs are modelled, not observed.
   d.DRIVER IN ('WEATHER', 'MACRO', 'COMPETITOR') AS IS_MODELLED_INPUT
