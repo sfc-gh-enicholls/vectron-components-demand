@@ -1,5 +1,8 @@
 # Vectron Components — Demand Planning (automotive Tier 1 demo)
 
+**Live demo (read-only copy, recorded data):**
+https://sfc-gh-enicholls.github.io/vectron-demand-demo/
+
 A weekly-grain demand planning app for **Vectron Components GmbH**, a fictional
 Munich-based automotive Tier 1 (~€8bn, brake systems, chassis, steering, ICE
 powertrain and e-drive) supplying BMW, Volkswagen, Audi, Porsche, Mercedes-Benz,
